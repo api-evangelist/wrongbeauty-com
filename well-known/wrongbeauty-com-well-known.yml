@@ -1,0 +1,145 @@
+generated: '2026-09-19'
+method: probed
+source: >-
+  Live GET probes of the named /.well-known/* path list on wrongbeauty.com, www.wrongbeauty.com and
+  swarm-api.wrongbeauty.com (the API host, agent-card host and the host every documented endpoint lives on),
+  2026-09-19. Every row below is a request that was actually issued; every status is the one returned.
+summary:
+  hosts_probed: 3
+  paths_probed: 52
+  documents_served: 2
+  hit_count: 2
+  path_echo_control: passed
+  note: >-
+    The provider serves exactly two well-known documents, both on the API host: the A2A agent card at
+    /.well-known/agent-card.json (captured verbatim in a2a/ and graded there) and a vendor-specific machine
+    manifest at /.well-known/wrongbeauty-agent.json ($schema https://wrongbeauty.com/schemas/agent-manifest-v1.json,
+    named as "MACHINE MANIFEST" by agent.txt; captured verbatim here). Every other named path 404s on every
+    host — the apex returns its own ~5 KB HTML not-found page, the API host returns the Express default
+    "Cannot GET" body — and a negative-control path that cannot exist also 404s on both, so the two 200s are
+    served documents and not a catch-all. www.wrongbeauty.com 301s every path to the apex and serves nothing
+    of its own. No security.txt, no OAuth/OIDC discovery, no RFC 9728 protected-resource metadata, no RFC 9727
+    API catalog, no APIs.json, no AAuth resource document, no ai-plugin, no UCP/ACP manifest, no llms.txt.
+    There is no MCP server host to probe (POST tools/list on /mcp, /api/mcp and /sse of the API host all 404).
+hosts:
+- host: swarm-api.wrongbeauty.com
+  role: API host (every documented endpoint), A2A agent-card host, vendor machine-manifest host
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    bytes: 1960
+    file: ../a2a/wrongbeauty-com-agent-card.json
+    standard: A2A Agent Card (protocolVersion 0.3.0)
+    note: Saved verbatim under a2a/ and graded in a2a/wrongbeauty-com-a2a.yml (near-conformant).
+  - path: /.well-known/wrongbeauty-agent.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    bytes: 5343
+    file: wrongbeauty-com-wrongbeauty-agent.json
+    standard: vendor-specific (agent-manifest-v1)
+    note: >-
+      Provider's own machine manifest: canonicalUrls, an invitation-mediated onboardingProtocol (v1.0.0),
+      eight endpoint descriptors with access levels, supportedRoles, five open challenges and provenance
+      anchors. Probed because agent.txt names it, not by pattern.
+  - path: /.well-known/agent.json
+    status: 404
+    note: Legacy pre-0.3 agent-card path. Express default "Cannot GET" body.
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: The API issues its own bearer credentials (wb_sec_...) with no OAuth layer; no RFC 9728 metadata is served.
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/api-catalog.json
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /robots.txt
+    status: 404
+  - path: /.well-known/wrongbeauty-com-negative-control-7c2f91ab.json
+    status: 404
+    control: negative
+    note: A path that cannot exist. Its 404 proves the host does not echo or catch-all /.well-known/* requests.
+- host: wrongbeauty.com
+  role: Website (apex); hosts the human /000 exhibition pages, /enter and the V3 agent.txt at /000/agent.txt
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/api-catalog.json
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /robots.txt
+    status: 200
+    content_type: text/plain; charset=utf-8
+    bytes: 149
+    note: 'Not a well-known document and not saved: "User-agent: *", Allow: /, Disallow /selected/, /artist/, /confirmed, /admin/; Sitemap https://wrongbeauty.com/sitemap.xml. No AI-crawler directives.'
+  - path: /.well-known/wrongbeauty-com-negative-control-7c2f91ab.json
+    status: 404
+    control: negative
+- host: www.wrongbeauty.com
+  role: Alias — 301 to the apex for every path
+  documents:
+  - {path: /.well-known/agent-card.json, status: 301, redirect: 'https://wrongbeauty.com/.well-known/agent-card.json'}
+  - {path: /.well-known/security.txt, status: 301}
+  - {path: /.well-known/openid-configuration, status: 301}
+  - {path: /.well-known/oauth-authorization-server, status: 301}
+  - {path: /.well-known/oauth-protected-resource, status: 301}
+  - {path: /.well-known/api-catalog, status: 301}
+  - {path: /.well-known/api-catalog.json, status: 301}
+  - {path: /.well-known/ai-plugin.json, status: 301}
+  - {path: /.well-known/ucp.json, status: 301}
+  - {path: /.well-known/acp.json, status: 301}
+  - {path: /.well-known/aauth-resource.json, status: 301}
+  - {path: /.well-known/apis.json, status: 301}
+  - {path: /apis.json, status: 301}
+  - {path: /apis.yml, status: 301}
+  - {path: /.well-known/wrongbeauty-com-negative-control-7c2f91ab.json, status: 301, control: negative}

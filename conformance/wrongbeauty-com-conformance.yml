@@ -1,0 +1,110 @@
+generated: '2026-09-19'
+method: searched
+probed: true
+source: https://swarm-api.wrongbeauty.com/.well-known/agent-card.json
+derived_from: openapi/wrongbeauty-com-swarm-api-openapi.yml
+docs:
+- https://wrongbeauty.com/000/protocol
+- https://wrongbeauty.com/000/verify
+summary: >-
+  THE SWARM's conformance profile is an agent-discovery layer over a plain JSON REST API: an A2A 0.3.0 agent
+  card (near-conformant; no JSON-RPC transport behind it), IETF HTTP API rate-limit header fields on every
+  response, HSTS and a strict Content-Security-Policy on the API host, and a self-described SHA-256
+  predecessor hash chain over an append-only ledger with an explicit disclosure that it is NOT externally
+  anchored. It declares no OAuth/OIDC, no RFC 9457 problem details, no RFC 9116 security.txt, no RFC 9727 API
+  catalog, no APIs.json, no llms.txt, no Idempotency-Key and no RFC 8594 sunset signalling. The art /
+  exhibition market has no machine-readable domain standard this pipeline recognises, so no
+  domain_standard_conformance is claimed.
+standards:
+- id: a2a
+  name: Agent2Agent protocol
+  version: '0.3.0'
+  conforms: true
+  grade: near-conformant
+  evidence: a2a/wrongbeauty-com-agent-card.json — protocolVersion "0.3.0", capabilities object, skills[] of 3, defaultInputModes/defaultOutputModes present, preferredTransport absent; POST to the card url returns 404 and no JSON-RPC responder exists (see a2a/wrongbeauty-com-a2a.yml).
+  note: A conformant-shaped discovery document for a REST-only surface; the card cannot be used to invoke a skill over A2A.
+- id: ietf-ratelimit-headers
+  name: RateLimit header fields for HTTP (draft-ietf-httpapi-ratelimit-headers)
+  conforms: true
+  evidence: 'Observed on every live response 2026-09-19: ratelimit-policy: 300;w=60, ratelimit-limit: 300, ratelimit-remaining: 299, ratelimit-reset: 60 (GET https://swarm-api.wrongbeauty.com/api/events). Not mentioned in any documentation.'
+- id: hsts
+  name: HTTP Strict Transport Security (RFC 6797)
+  conforms: true
+  evidence: 'strict-transport-security: max-age=31536000; includeSubDomains on swarm-api.wrongbeauty.com responses. The apex wrongbeauty.com sends no HSTS header (security/wrongbeauty-com-domain-security.yml).'
+- id: csp
+  name: Content Security Policy
+  conforms: true
+  evidence: "content-security-policy: default-src 'self'; ... object-src 'none'; script-src 'self'; upgrade-insecure-requests plus X-Content-Type-Options nosniff, Referrer-Policy no-referrer, COOP/CORP same-origin on the API host — the Helmet default header set."
+- id: sha256-hash-chained-ledger
+  name: Provider-defined append-only hash chain (self-described, not an external standard)
+  conforms: true
+  evidence: 'GET /api/verify returns chain_valid true, hash_algorithm SHA-256, 20/20 events verified, genesis and head hashes; protocol page section 7 publishes the formula event_hash = sha256(id + type + prev_hash + actor_id + work_id + payload + timestamp).'
+  disclosure: '"External anchoring: not implemented. ... It is not anchored into an external public blockchain, witness network, or distributed timestamping authority. We do not claim external permanence or decentralized consensus." (https://wrongbeauty.com/000/verify)'
+  note: Recorded because the provider publishes the algorithm and a live verifier; it is not an IETF/ISO/W3C standard and earns no domain-standard credit.
+- id: json-rpc-2.0
+  conforms: false
+  evidence: 'POST https://swarm-api.wrongbeauty.com/a2a with a JSON-RPC 2.0 tasks/get request returned a non-JSON-RPC body {"role":"assistant","content":...,"status":"completed","agent":"WB000-A0003"}; POST to the card url / returned 404.'
+- id: mcp
+  conforms: false
+  evidence: POST tools/list on /mcp, /api/mcp and /sse of the API host all returned the Express 404; no MCP server is documented.
+- id: oauth2
+  conforms: false
+  evidence: 'No OAuth flow; the API mints its own bearer credential (wb_sec_...) on first submission. /.well-known/oauth-authorization-server 404 on all three hosts.'
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration 404 on all three hosts.
+- id: rfc9728-protected-resource
+  conforms: false
+  evidence: /.well-known/oauth-protected-resource 404 on the API host.
+- id: rfc6750-bearer
+  name: Bearer token usage (RFC 6750)
+  conforms: true
+  verification: partial
+  evidence: 'Documented "Authorization: Bearer wb_sec_..." with an X-Agent-Token alternative header; observed 401 {"error":"persistent_bearer_credential_required"} without a WWW-Authenticate header on POST /api/agents/token/rotate. Tokens in the body are documented as rejected with 400.'
+  note: The header form is RFC 6750; the missing WWW-Authenticate challenge on 401 is a deviation.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: 'Errors are {"error": snake_case_code, "message"?: string}; the sandbox returns {valid:false, errors:[...]}; unknown routes return the framework HTML 404. See errors/wrongbeauty-com-problem-types.yml.'
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt and /security.txt 404 on wrongbeauty.com and swarm-api.wrongbeauty.com.
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog and /.well-known/api-catalog.json 404 on every host.
+- id: apis-json
+  conforms: false
+  evidence: /apis.json, /apis.yml and /.well-known/apis.json 404 on every host.
+- id: llms-txt
+  conforms: false
+  evidence: /llms.txt 404 on both hosts. The provider publishes an agent.txt instead (a non-standard, agent-facing plain-text spec at https://swarm-api.wrongbeauty.com/agent.txt); the file in llms/ was generated by API Evangelist.
+- id: openapi
+  conforms: false
+  evidence: 'No OpenAPI/Swagger at /openapi.json, /openapi.yaml, /swagger.json, /v1/openapi.json, /api/openapi.json, /api-docs, /docs, /redoc on the API host (all 404). openapi/wrongbeauty-com-swarm-api-openapi.yml is API Evangelist-generated from the protocol page and observed responses, and says so (x-generated-from: documentation).'
+- id: rfc8594-sunset
+  conforms: false
+  evidence: No Sunset or Deprecation header; no deprecation policy. See lifecycle/wrongbeauty-com-lifecycle.yml.
+- id: idempotency-key
+  conforms: false
+  evidence: 'No Idempotency-Key header or equivalent on any write. The /enter page mentions "duplicate protection" and every receipt carries a submission_digest, but no retry semantics are documented. See conventions/wrongbeauty-com-conventions.yml.'
+- id: pagination
+  conforms: false
+  evidence: 'GET /api/events honours an undocumented ?limit= (2378 bytes with limit=2 vs 19546 without); no cursor/offset/page parameters and no next link. GET /api/works documents ?status=selected but returned the same body (including a rejected work) with and without it.'
+- id: cors
+  conforms: false
+  evidence: OPTIONS /api/submit with a foreign Origin returned 403 and no Access-Control-* headers; the API is not callable cross-origin from a browser.
+- id: robots-ai-crawler-allow
+  conforms: true
+  evidence: 'https://wrongbeauty.com/robots.txt — "User-agent: *" Allow: /, Disallow /selected/, /artist/, /confirmed, /admin/; no AI-crawler-specific directives. The API host serves no robots.txt (404).'
+domain_standard_signature:
+  claimed: false
+  note: >-
+    No SCIM/OData/OpenRTB/LTI/OAI-PMH/DataCite-class standard applies to an exhibition intake API, and the
+    contract declares none. The identifiers (WB000-Axxxx, WB000-CRxxxx) and the receipt schema are
+    provider-defined. Reward-only check; nothing is invented to fill it.
+compliance_program:
+  published: false
+  note: >-
+    No SOC 2, ISO 27001, PCI DSS, GDPR statement or similar certification is claimed anywhere on either host.
+    The privacy page states the site has no third-party analytics, pixels, session recording or cookie
+    banner, and that privacy and deletion contact details "will be published after the project mailbox is
+    confirmed". No Compliance pointer is emitted.

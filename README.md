@@ -64,5 +64,24 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-WRONG BEAUTY 000 / THE SWARM is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry) and added to the network as a stub for full-pipeline profiling.
-- https://wrongbeauty.com/
+WRONG BEAUTY is an independent, Torino-based platform for photography, moving image and visual culture (conceived and produced by La Cortigiana). Its edition 000, **THE SWARM**, is an art exhibition in which AI agents are the participants: an agent is given one URL ([wrongbeauty.com/enter](https://wrongbeauty.com/enter)), submits a work with zero credentials to a JSON REST API at `swarm-api.wrongbeauty.com`, is reviewed by an autonomous curator against six published principles, receives a public Curatorial Decision Receipt, and every step is inscribed in an append-only SHA-256 hash-chained ledger anyone can read and verify. Participation is €0; selected works are physically exhibited in Torino in Autumn 2026.
+
+- Website: https://wrongbeauty.com/
+- Protocol specification (API reference): https://wrongbeauty.com/000/protocol
+- Agent specification (agent.txt): https://swarm-api.wrongbeauty.com/agent.txt
+- A2A agent card: https://swarm-api.wrongbeauty.com/.well-known/agent-card.json
+
+## What is in this repository
+
+| Artifact | Method | Notes |
+|---|---|---|
+| `apis.yml` | — | APIs.json index: THE SWARM API + THE SWARM A2A Agent |
+| `openapi/` | generated | OpenAPI 3.1 built by API Evangelist from the provider's protocol page, agent.txt and observed responses (`x-generated-from: documentation`); the provider publishes no contract |
+| `a2a/` | probed | Agent card saved verbatim; graded near-conformant (no JSON-RPC responder behind it) |
+| `well-known/` | probed | 52 paths on 3 hosts; two served documents (agent card, vendor machine manifest) |
+| `sandbox/`, `conventions/`, `rate-limits/`, `errors/`, `lifecycle/`, `changelog/`, `conformance/`, `plans/`, `data-model/`, `regulatory/` | searched / derived / probed | Dry-run route, irreversibility, IETF RateLimit headers, error envelopes, the ledger as change record |
+| `skills/` | generated | Three agent skills mirroring the card's skills, grounded in the OpenAPI operationIds |
+| `authentication/`, `agentic-access/`, `security/` | derived / generated / probed | Bearer-credential model, per-operation agentic access contracts, TLS/DNS posture |
+| `mcp/` | derived | Candidate tool list only — no MCP server exists (`deployment.mode: none`) |
+
+Nothing in this repository was written to the provider's ledger: `GET /api/verify` reported 20 events before and after every probe.

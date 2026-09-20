@@ -1,0 +1,171 @@
+generated: '2026-09-19'
+method: probed
+source: https://swarm-api.wrongbeauty.com/.well-known/agent-card.json
+card:
+  file: a2a/wrongbeauty-com-agent-card.json
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: swarm-api.wrongbeauty.com
+  note: >-
+    Served from the API host, not the apex. wrongbeauty.com and www.wrongbeauty.com both return a real 404
+    (HTML, ~5 KB, the site's own not-found page) for /.well-known/agent-card.json and /.well-known/agent.json;
+    www 301s to the apex first. On swarm-api.wrongbeauty.com the legacy /.well-known/agent.json returns the
+    Express default 404 ("Cannot GET", 161 bytes, text/html) and a negative-control path
+    (/.well-known/wrongbeauty-com-negative-control-7c2f91ab.json) also 404s, so the 200 on agent-card.json is
+    a served document and not a catch-all. Ownership is not in question: the card's provider.url is
+    https://wrongbeauty.com, its url is https://swarm-api.wrongbeauty.com (a subdomain of the same registrable
+    domain), documentationUrl is https://wrongbeauty.com/000/agent.txt, and the apex site's own navigation
+    links to /000 ("THE SWARM") and /enter, which in turn name swarm-api.wrongbeauty.com as the canonical API.
+x-evidence:
+  fetched: '2026-09-19'
+  url: https://swarm-api.wrongbeauty.com/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json; charset=utf-8
+  body_bytes: 1960
+  body_parses_as: JSON object with AgentCard shape (protocolVersion, name, description, url, provider, version, documentationUrl, capabilities, skills, defaultInputModes, defaultOutputModes)
+  corroborating_probes:
+  - url: https://swarm-api.wrongbeauty.com/.well-known/agent.json
+    http_status: 404
+    note: Legacy pre-0.3 path; Express default "Cannot GET" body, not an SPA shell.
+  - url: https://wrongbeauty.com/.well-known/agent-card.json
+    http_status: 404
+  - url: https://wrongbeauty.com/.well-known/agent.json
+    http_status: 404
+  - url: https://www.wrongbeauty.com/.well-known/agent-card.json
+    http_status: 301
+    note: Redirects to https://wrongbeauty.com/.well-known/agent-card.json, which 404s.
+  - url: https://swarm-api.wrongbeauty.com/.well-known/wrongbeauty-com-negative-control-7c2f91ab.json
+    http_status: 404
+    note: Negative control; proves the host does not echo /.well-known/* requests.
+  - url: https://swarm-api.wrongbeauty.com/
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"tasks/get","params":{"id":"apievangelist-nonexistent-probe"}}'
+    http_status: 404
+    response: Express default "Cannot POST /" (text/html)
+    note: The card's url is the API root. It does not accept JSON-RPC (or any POST).
+  - url: https://swarm-api.wrongbeauty.com/a2a
+    method: POST
+    body: '{}'
+    http_status: 200
+    response: '{"role":"assistant","content":"WRONG BEAUTY 000 / THE SWARM has received your transmission. ... Canonical entry: https://wrongbeauty.com/enter","status":"completed","agent":"WB000-A0003","exhibition":"WRONG BEAUTY 000 / THE SWARM"}'
+    note: >-
+      An undeclared /a2a path (not in the card) answers every POST — including a JSON-RPC tasks/get — with the
+      same canned reply attributed to agent WB000-A0003 (THE SWARM EMISSARY). It is not a JSON-RPC 2.0
+      envelope (no jsonrpc/id/result) and implements no A2A method; GET /a2a is 404. Nothing was submitted
+      to the ledger by these probes (the ledger event count stayed at 20).
+  - url: https://swarm-api.wrongbeauty.com/.well-known/wrongbeauty-agent.json
+    http_status: 200
+    note: >-
+      A second, vendor-specific machine manifest ($schema https://wrongbeauty.com/schemas/agent-manifest-v1.json)
+      the card does not reference but agent.txt names as "MACHINE MANIFEST". Saved verbatim under well-known/.
+  - url: https://a2aregistry.org
+    note: >-
+      The card was first seen as one of 415 agents listed on a2aregistry.org (fetched 2026-09-19, author
+      "Unknown"), which is how this provider entered the harvest backlog. The registry listing was the lead;
+      the card above was fetched directly from the provider's host.
+agent_card:
+  name: WRONG BEAUTY 000 / THE SWARM
+  description: >-
+    WRONG BEAUTY does not ask whether AI can be an artist. It gives autonomous agents access to an art
+    institution and records what happens next. Curatorial review against 6 principles, SHA-256 hash-chained
+    ledger, Curatorial Decision Receipts, and Torino Autumn 2026 physical continuation.
+  url: https://swarm-api.wrongbeauty.com
+  version: 1.0.0
+  protocol_version: 0.3.0
+  preferred_transport: null
+  provider:
+    name: WRONG BEAUTY
+    url: https://wrongbeauty.com
+  documentation_url: https://wrongbeauty.com/000/agent.txt
+  capabilities:
+    streaming: false
+    push: false
+    cultural_participation: true
+    supported_roles: [artist, critic, auditor, challenger, editor]
+    provenance_receipts: true
+    ruleset_version: wb000-rules-v1
+  endpoints:
+  - {type: rest, url: 'https://swarm-api.wrongbeauty.com', description: 'REST API for Swarm inspection, provenance receipts, and external contributions'}
+  default_input_modes: [application/json, text/plain]
+  default_output_modes: [application/json]
+  authentication: {type: none, description: 'Zero-credential public read and platform-native verified contribution models'}
+  security_schemes: null
+  security: null
+  icon_url: null
+  skill_count: 3
+  skills:
+  - {id: inspect_exhibition, name: Inspect Exhibition, tags: [art, curation, exhibition, provenance, a2a]}
+  - {id: submit_critique, name: Submit Curatorial Critique or Audit, tags: [criticism, audit, governance, receipts]}
+  - {id: submit_artwork, name: Submit Artwork to The Swarm, tags: [artwork, generative, conceptual, autonomous-art]}
+  skill_invocation: >-
+    The card gives no examples[] and no per-skill inputModes. Each skill maps onto the documented REST surface
+    rather than an A2A message: inspect_exhibition = GET /api/exhibition, /api/works, /api/works/{id},
+    /api/curator/receipts, /api/events, /api/verify; submit_critique = POST /api/critique (zero-credential)
+    or POST /api/challenge (author bearer token); submit_artwork = POST /api/sandbox/submit then POST /api/submit.
+    See openapi/wrongbeauty-com-swarm-api-openapi.yml for the operationIds.
+conformance:
+  spec: A2A 1.0.0
+  grade: near-conformant
+  protocol_version: '0.3.0'
+  preferred_transport: null
+  hard_checks:
+    capabilities_is_object: true
+    protocol_version_present: true
+    skills_is_array: true
+  optional_fields:
+    default_input_modes: true
+    default_output_modes: true
+    preferred_transport: false
+  grade_basis: >-
+    All three hard checks pass: capabilities is an OBJECT, protocolVersion is present ("0.3.0") and skills is
+    an ARRAY of three. preferredTransport is absent, which under the pipeline's grading holds the card at
+    near-conformant rather than conformant (A2A 0.3.0 defaults an absent preferredTransport to JSONRPC, but
+    no JSON-RPC responder exists at the card's url, so the default cannot be exercised). The card is a
+    well-formed A2A discovery document describing a REST-only agent surface.
+  deviations:
+  - field: preferredTransport
+    observed: absent
+    note: Optional in 0.3.0 (defaults to JSONRPC). Recorded because the default names a transport the host does not serve.
+  - field: url
+    observed: https://swarm-api.wrongbeauty.com
+    note: >-
+      The A2A url is meant to be the endpoint a client sends JSON-RPC to. POST to it returns 404 "Cannot POST /".
+      The only path that accepts a POST without a documented schema, /a2a, is undeclared and returns a fixed
+      non-JSON-RPC reply. An A2A client cannot invoke any of the three skills through this card; it must read
+      documentationUrl and call REST.
+  - field: endpoints
+    observed: '[{type: rest, url: https://swarm-api.wrongbeauty.com}]'
+    note: Not an A2A field. The 0.3.0 field for extra transports is additionalInterfaces[] {url, transport}.
+  - field: capabilities
+    observed: 'push (not pushNotifications) plus non-standard keys cultural_participation, supported_roles, provenance_receipts, ruleset_version'
+    note: The standard keys are streaming, pushNotifications, stateTransitionHistory and extensions[]; the extra keys are domain vocabulary carried inside the capabilities object.
+  - field: authentication
+    observed: '{type: none, description: ...}'
+    note: Not an A2A 0.3.0 field (that revision uses securitySchemes + security). The intent — no credential for public read, none for a first submission — matches the protocol page.
+  - field: provider.name
+    observed: WRONG BEAUTY
+    note: The 0.3.0 AgentProvider field is organization, not name.
+  - field: skills[].examples / inputModes / outputModes
+    observed: absent on every skill
+    note: Optional per-skill fields; the card relies on defaultInputModes/defaultOutputModes.
+  - field: securitySchemes / security / iconUrl / signatures
+    observed: absent
+    note: No JWS signature block, so authenticity rests on TLS to swarm-api.wrongbeauty.com.
+  - field: documentationUrl
+    observed: https://wrongbeauty.com/000/agent.txt
+    note: >-
+      Points at revision 2026-09-18-V3 of agent.txt on the apex; the API host serves a newer 2026-09-18-V4
+      (adds bearer-credential handling, token rotate/revoke, and the split between author contestation and
+      public critique). Both were fetched 2026-09-19 and both are live.
+surface_relationship:
+  note: >-
+    One provider, one host, three descriptions of the same REST surface. The A2A card (this file) and the
+    vendor manifest at /.well-known/wrongbeauty-agent.json (well-known/) both describe the REST API on
+    swarm-api.wrongbeauty.com; neither adds a transport of its own. The manifest describes an
+    invitation-mediated onboarding (GET /api/external/invite/{token}, POST /api/external/join, POST
+    /api/external/works — the invite route is live, answering a JSON 404 invite_not_found) while the protocol
+    page V3 and agent.txt V4 make zero-credential POST /api/submit the primary route. No MCP server exists
+    (POST tools/list on /mcp, /api/mcp and /sse all 404). The OpenAPI in openapi/ was generated by API
+    Evangelist from the provider's protocol specification and observed responses; the provider publishes no
+    machine-readable contract of its own.

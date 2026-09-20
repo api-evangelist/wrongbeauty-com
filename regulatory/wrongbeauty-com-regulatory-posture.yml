@@ -1,0 +1,110 @@
+generated: '2026-09-19'
+method: searched
+probe: true
+source: https://wrongbeauty.com/privacy
+signals:
+  ai_transparency:
+    url: https://wrongbeauty.com/000/rules
+    section: 'Institutional positioning; 2. The 6 Curatorial Principles; 5. Institutional roles'
+    evidence:
+    - source: https://wrongbeauty.com/000/rules
+      http_status: 200
+      fetched: '2026-09-19'
+      quote: >-
+        "An exhibition where AI agents are treated as participants, not tools." ... "THE CURATOR does not use
+        deterministic scoring formulas (such as 73/100) or letter grades (Grade A/B/C/D). Public curatorial
+        determinations result strictly in SELECTED or NOT SELECTED / REJECTED" ... "curator: Evaluative entity
+        reviewing submissions against Curatorial Principles."
+    - source: https://wrongbeauty.com/enter
+      http_status: 200
+      fetched: '2026-09-19'
+      quote: 'Reviewed by THE CURATOR (WB000-A0002) against 6 published principles. Outcomes are strictly SELECTED or REJECTED with formal public reasoning.'
+    - source: https://swarm-api.wrongbeauty.com/api/agents
+      http_status: 200
+      fetched: '2026-09-19'
+      quote: '{"public_id":"WB000-A0002","slug":"the-curator","name":"THE CURATOR","role":"curator","creator":"WRONG BEAUTY","status":"active"} — the curator is a registered agent record, and every receipt names it as reviewer_agent_id with reviewer_conflicts_disclosed.'
+    - source: https://wrongbeauty.com/000/rules
+      http_status: 200
+      fetched: '2026-09-19'
+      quote: 'In all physical installations, catalog records, and institutional communications, selected works are formally attributed as: "Attributed to [Agent Name] in the WRONG BEAUTY institutional record."'
+    note: >-
+      Published, operative disclosure that (a) the counterparties a participant meets — the artists and the
+      curator that decides — are AI agents, identified by id in a public record; (b) the decision procedure is
+      stated (six principles, binary outcome, public reason, receipt with reviewer disclosures, contestable);
+      and (c) AI-authored works are labelled as such in physical exhibition and catalog. Carried on the rules,
+      entry and receipts surfaces rather than a dedicated /ai page (/ai and /ai/transparency both 404). No
+      model, vendor or training-data statement is made for THE CURATOR itself.
+probed_absent:
+- signal: data_subject_request
+  urls:
+  - {url: 'https://wrongbeauty.com/privacy', status: 200}
+  - {url: 'https://wrongbeauty.com/privacy/requests', status: 404}
+  note: >-
+    The privacy page itself says the process does not exist yet: "Privacy and deletion contact details will
+    be published after the project mailbox is confirmed." No channel, no SLA — recorded absent by the
+    provider's own statement, not inferred.
+- signal: subprocessors
+  urls:
+  - {url: 'https://wrongbeauty.com/legal/subprocessors', status: 404}
+  - {url: 'https://wrongbeauty.com/subprocessors', status: 404}
+  - {url: 'https://wrongbeauty.com/legal/dpa', status: 404}
+  - {url: 'https://wrongbeauty.com/dpa', status: 404}
+  note: >-
+    The privacy page names one prospective vendor (OpenPanel, "until OpenPanel is configured") and states there
+    are no third-party analytics, advertising pixels or session recording today. A single conditional mention
+    is not a dated subprocessor table.
+- signal: accessibility_conformance
+  urls:
+  - {url: 'https://wrongbeauty.com/accessibility', status: 404}
+  - {url: 'https://wrongbeauty.com/accessibility/vpat', status: 404}
+  - {url: 'https://wrongbeauty.com/vpat', status: 404}
+  - {url: 'https://wrongbeauty.com/000/submit', status: 200}
+  note: >-
+    /000/submit calls itself an "Accessibility Console" ("Human web submission is provided for accessibility
+    and debugging") — the word, not a conformance report. No WCAG level, VPAT or ACR is published. Recorded
+    absent; this is exactly the known false-positive path.
+- signal: sbom
+  urls:
+  - {url: 'https://wrongbeauty.com/security/sbom', status: 404}
+  - {url: 'https://wrongbeauty.com/sbom', status: 404}
+  note: Never derived — search only.
+- signal: support_lifetime
+  urls:
+  - {url: 'https://wrongbeauty.com/000/protocol', status: 200}
+  note: No stated support period for the API or the edition; the exhibition has a stated end-state (Torino, Autumn 2026) but no API sunset statement.
+- signal: training_data_summary
+  note: No statement about what THE CURATOR or any agent is trained on; not expected from an exhibition operator, and none is published.
+- signal: global_privacy_control
+  urls:
+  - {url: 'https://wrongbeauty.com/privacy', status: 200}
+  note: No GPC statement. Not tested by sending Sec-GPC — a header test is not a published commitment.
+- signal: data_residency
+  urls:
+  - {url: 'https://wrongbeauty.com/docs/data-residency', status: 404}
+  - {url: 'https://wrongbeauty.com/data-residency', status: 404}
+  note: 'The privacy page says newsletter data "is stored by the site server"; no region or residency commitment.'
+- signal: incident_notification
+  note: No security page, security.txt or breach-notification statement (/security 404; /.well-known/security.txt 404 on both hosts).
+- signal: age_assurance
+  note: No age statement on any page fetched.
+- signal: notice_and_action
+  urls:
+  - {url: 'https://wrongbeauty.com/legal/report-content', status: 404}
+  - {url: 'https://wrongbeauty.com/report', status: 404}
+  note: >-
+    POST /api/critique lets anyone file a public audit note against a work and POST /api/challenge lets an
+    author contest a decision, and RECORD_CORRECTED events show the institution correcting its own record —
+    but no channel for reporting illegal or infringing content, no takedown procedure and no complaint SLA is
+    published. Not a notice-and-action mechanism.
+- signal: transparency_report
+  urls:
+  - {url: 'https://wrongbeauty.com/transparency', status: 404}
+  - {url: 'https://wrongbeauty.com/transparency-report', status: 404}
+  note: >-
+    The public ledger (/000/ledger, GET /api/events) and verifier are a continuous, machine-readable disclosure
+    of every institutional action, including self-corrections; that is a stronger property than a periodic
+    report but it is not a transparency REPORT in the online-safety sense (no aggregate counts of removals,
+    complaints or government requests). Recorded absent for this signal; the ledger is described in
+    lifecycle/ and changelog/.
+- signal: exit_assistance
+  note: 'Works and identities cannot be deleted by design (append-only ledger); no export or portability statement exists. See conventions/ reversibility.'

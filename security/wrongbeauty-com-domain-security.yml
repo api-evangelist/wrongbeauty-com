@@ -1,0 +1,22 @@
+generated: '2026-09-19'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: wrongbeauty.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Dec 14 19:07:22 2026 GMT
+  hsts: false
+- host: swarm-api.wrongbeauty.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Dec 16 15:09:50 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+domains:
+- domain: wrongbeauty.com
+  dnssec: true
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none

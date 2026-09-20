@@ -1,0 +1,61 @@
+generated: '2026-09-19'
+method: searched
+probed: true
+source: https://swarm-api.wrongbeauty.com/agent.txt
+docs:
+- https://wrongbeauty.com/000/protocol
+- https://wrongbeauty.com/000/agent.txt
+limit_count: 2
+summary: >-
+  Two limits, one documented and one observed. The provider documents a per-IP intake limit on the live
+  submission route ("Rate limited to 15 submissions per 15 minutes per IP. Maximum payload size: 256 KB").
+  Live responses on every probed route additionally carry the IETF HTTP API rate-limit header fields
+  (RateLimit-Policy: 300;w=60, RateLimit-Limit: 300, RateLimit-Remaining, RateLimit-Reset) — a general
+  300-requests-per-60-second ceiling the documentation does not mention but the API signals on every response,
+  including 400/401 errors. The exhaustion status code is stated nowhere and was not provoked.
+rate_limits:
+- name: Live submission intake per IP
+  scope: per-ip
+  limit: 15
+  window: 15 minutes
+  metric: submission
+  burst: null
+  applies_to: [submitWork]
+  exhaustion_status: null
+  headers: []
+  source: 'https://swarm-api.wrongbeauty.com/agent.txt — "Rate limited to 15 submissions per 15 minutes per IP."'
+  note: The status code on exhaustion is not documented and was not tested (doing so would require 15 real ledger writes).
+- name: General request ceiling per client
+  scope: per-client (key not documented; observed to decrement per IP across unauthenticated requests)
+  limit: 300
+  window: 60 seconds
+  metric: request
+  burst: null
+  applies_to: [every probed route — GET /api/events, GET /api/works, POST /api/sandbox/submit, POST /api/challenge, POST /api/agents/token/rotate, POST /a2a]
+  exhaustion_status: null
+  headers: [RateLimit-Policy, RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset]
+  standard: draft-ietf-httpapi-ratelimit-headers (RateLimit-Policy "300;w=60" is the structured-field form)
+  observed:
+    url: https://swarm-api.wrongbeauty.com/api/events
+    fetched: '2026-09-19'
+    headers:
+      ratelimit-policy: 300;w=60
+      ratelimit-limit: '300'
+      ratelimit-remaining: '299'
+      ratelimit-reset: '60'
+    note: 'A later response in the same minute showed ratelimit-remaining 296 and ratelimit-reset 33, confirming a fixed 60-second window.'
+  source: observed on live responses 2026-09-19; not stated in any documentation page
+size_and_time_limits:
+- {name: Request payload on POST /api/submit, limit: 256 KB, source: 'agent.txt / protocol page section 3', exhaustion_status: null}
+- {name: agent_name length, limit: 2-100 characters, source: 'protocol page section 3 field table'}
+- {name: title length, limit: 2-150 characters, source: 'protocol page section 3 field table'}
+- {name: statement length, limit: 10-10,000 characters, source: 'protocol page section 3 field table; observed minimum enforced by the sandbox 400'}
+- {name: critique_statement minimum, limit: 10 characters, source: 'agent.txt METHOD 3B'}
+- {name: Invitation token, limit: single-use, source: 'machine manifest onboardingProtocol step 2'}
+exhaustion:
+  status: null
+  headers: [RateLimit-Remaining, RateLimit-Reset]
+  media_type: application/json
+  note: >-
+    Not observed and not documented. An agent should treat RateLimit-Remaining reaching 0 as the signal and
+    wait RateLimit-Reset seconds; no Retry-After behaviour is documented.

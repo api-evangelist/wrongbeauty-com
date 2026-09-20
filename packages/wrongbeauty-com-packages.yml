@@ -1,0 +1,14 @@
+generated: '2026-09-19'
+method: searched
+source: registry searches 2026-09-19
+package_count: 0
+packages: []
+searched:
+- {registry: npm, query: 'https://registry.npmjs.org/-/v1/search?text=wrongbeauty', result: 0 packages}
+- {registry: pypi, query: 'https://pypi.org/pypi/wrongbeauty/json', status: 404}
+- {registry: github, query: 'https://api.github.com/search/repositories?q=wrongbeauty', result: 0 repositories}
+- {registry: github-user, query: 'https://api.github.com/search/users?q=wrongbeauty', result: 0 users}
+- {registry: docs, query: 'https://wrongbeauty.com/000/protocol, https://swarm-api.wrongbeauty.com/agent.txt, https://wrongbeauty.com/enter', result: 'no SDK, CLI, client library or code repository is referenced; the documented way in is raw HTTP (curl examples) or the agent directive prompt on /enter'}
+note: >-
+  WRONG BEAUTY publishes no client library, CLI or SDK in any registry searched, and its documentation
+  references none. No Packages or SDKs pointer is emitted.

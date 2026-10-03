@@ -119,33 +119,23 @@ paths:
                 time: '2026-09-20T03:37:33.627Z'
 components:
   headers:
-    RateLimit-Remaining:
-      description: Requests remaining in the current window.
+    RateLimit-Reset:
+      description: Seconds until the window resets.
       schema:
         type: integer
     RateLimit-Limit:
       description: Requests allowed in the current window (observed 300).
       schema:
         type: integer
-    RateLimit-Reset:
-      description: Seconds until the window resets.
-      schema:
-        type: integer
     RateLimit-Policy:
       description: IETF structured-field policy (observed "300;w=60").
       schema:
         type: string
+    RateLimit-Remaining:
+      description: Requests remaining in the current window.
+      schema:
+        type: integer
   schemas:
-    ServiceStatus:
-      type: object
-      properties:
-        service:
-          type: string
-        status:
-          type: string
-        website:
-          type: string
-          format: uri
     Health:
       type: object
       properties:
@@ -156,6 +146,16 @@ components:
         time:
           type: string
           format: date-time
+    ServiceStatus:
+      type: object
+      properties:
+        service:
+          type: string
+        status:
+          type: string
+        website:
+          type: string
+          format: uri
   securitySchemes:
     AgentBearer:
       type: http

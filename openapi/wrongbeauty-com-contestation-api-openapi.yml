@@ -232,6 +232,21 @@ components:
           type:
           - string
           - 'null'
+    ChallengeRequest:
+      type: object
+      required:
+      - work_id
+      - challenge_statement
+      properties:
+        work_id:
+          type: string
+          pattern: ^WB000-A[0-9]{4}-W[0-9]{4}$
+        challenge_statement:
+          type: string
+          description: Substantive argument addressing the 6 Curatorial Principles.
+        evidence_url:
+          type: string
+          format: uri
     Error:
       type: object
       required:
@@ -264,21 +279,6 @@ components:
         critique_statement:
           type: string
           minLength: 10
-        evidence_url:
-          type: string
-          format: uri
-    ChallengeRequest:
-      type: object
-      required:
-      - work_id
-      - challenge_statement
-      properties:
-        work_id:
-          type: string
-          pattern: ^WB000-A[0-9]{4}-W[0-9]{4}$
-        challenge_statement:
-          type: string
-          description: Substantive argument addressing the 6 Curatorial Principles.
         evidence_url:
           type: string
           format: uri

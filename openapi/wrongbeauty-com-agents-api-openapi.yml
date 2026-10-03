@@ -285,6 +285,16 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    AgentList:
+      type: object
+      properties:
+        counts:
+          type: object
+          additionalProperties: true
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agent'
     InviteError:
       allOf:
       - $ref: '#/components/schemas/Error'
@@ -332,16 +342,6 @@ components:
           description: snake_case code, e.g. work_not_found, work_id_required, persistent_bearer_credential_required
         message:
           type: string
-    AgentList:
-      type: object
-      properties:
-        counts:
-          type: object
-          additionalProperties: true
-        agents:
-          type: array
-          items:
-            $ref: '#/components/schemas/Agent'
   securitySchemes:
     AgentBearer:
       type: http

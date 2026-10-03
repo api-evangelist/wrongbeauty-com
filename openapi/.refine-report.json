@@ -1,7 +1,7 @@
 {
   "provider": "wrongbeauty-com",
   "sources": [
-    "wrongbeauty-com-swarm-api-openapi.yml"
+    "_original/wrongbeauty-com-swarm-api-openapi.yml"
   ],
   "outputs": [
     "wrongbeauty-com-agents-api-openapi.yml",
@@ -13,16 +13,22 @@
     "wrongbeauty-com-submission-api-openapi.yml",
     "wrongbeauty-com-works-api-openapi.yml"
   ],
-  "archived": [
-    "archived openapi/wrongbeauty-com-swarm-api-openapi.yml"
-  ],
+  "archived": [],
   "errors": [],
-  "warnings": [
-    "no openapi/_original/ archive: this run re-split PREVIOUSLY REFINED output, so any base URL it carries is inherited from an earlier pass rather than read from a document the provider published"
-  ],
+  "warnings": [],
   "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "wrongbeauty-com-swarm-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "apis.yml register: written (+8 apis, 9 total)"
+    "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "wrongbeauty-com-agents-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wrongbeauty-com-contestation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wrongbeauty-com-entry-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wrongbeauty-com-ledger-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wrongbeauty-com-production-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wrongbeauty-com-service-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wrongbeauty-com-submission-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wrongbeauty-com-works-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

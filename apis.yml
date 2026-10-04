@@ -168,6 +168,8 @@ apis:
   humanURL: https://wrongbeauty.com/000/protocol
   baseURL: https://swarm-api.wrongbeauty.com
   tags:
+  - Services
+  tags_raw:
   - Service
   properties:
   - type: OpenAPI

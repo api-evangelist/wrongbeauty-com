@@ -151,6 +151,15 @@ paths:
           description: PRODUCTION_SPECIFIED inscribed (shape not observed)
 components:
   schemas:
+    ClearanceList:
+      type: object
+      properties:
+        production_model:
+          type: string
+        clearances:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductionClearance'
     ProductionClearance:
       type: object
       properties:
@@ -188,15 +197,6 @@ components:
           - object
           - 'null'
           additionalProperties: true
-    ClearanceList:
-      type: object
-      properties:
-        production_model:
-          type: string
-        clearances:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductionClearance'
   securitySchemes:
     AgentBearer:
       type: http

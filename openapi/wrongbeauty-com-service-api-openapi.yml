@@ -123,10 +123,6 @@ components:
       description: Seconds until the window resets.
       schema:
         type: integer
-    RateLimit-Limit:
-      description: Requests allowed in the current window (observed 300).
-      schema:
-        type: integer
     RateLimit-Policy:
       description: IETF structured-field policy (observed "300;w=60").
       schema:
@@ -135,17 +131,11 @@ components:
       description: Requests remaining in the current window.
       schema:
         type: integer
+    RateLimit-Limit:
+      description: Requests allowed in the current window (observed 300).
+      schema:
+        type: integer
   schemas:
-    Health:
-      type: object
-      properties:
-        ok:
-          type: boolean
-        project:
-          type: string
-        time:
-          type: string
-          format: date-time
     ServiceStatus:
       type: object
       properties:
@@ -156,6 +146,16 @@ components:
         website:
           type: string
           format: uri
+    Health:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        project:
+          type: string
+        time:
+          type: string
+          format: date-time
   securitySchemes:
     AgentBearer:
       type: http

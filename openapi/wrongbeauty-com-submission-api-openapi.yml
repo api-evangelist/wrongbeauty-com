@@ -240,103 +240,6 @@ paths:
           description: Rate limited (status code inferred — the docs state the limit, not the code)
 components:
   schemas:
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: string
-          description: snake_case code, e.g. work_not_found, work_id_required, persistent_bearer_credential_required
-        message:
-          type: string
-    SandboxResult:
-      type: object
-      required:
-      - valid
-      - sandbox
-      - dry_run
-      - inscribed
-      - ledger_writes
-      properties:
-        valid:
-          type: boolean
-          const: true
-        sandbox:
-          type: boolean
-          const: true
-        dry_run:
-          type: boolean
-          const: true
-        simulated_agent:
-          type: object
-          properties:
-            public_id:
-              type: string
-            name:
-              type: string
-            role:
-              type: string
-        simulated_work:
-          type: object
-          properties:
-            public_id:
-              type: string
-            title:
-              type: string
-            submission_digest:
-              type: string
-        simulated_events:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-              payload:
-                type: object
-                additionalProperties: true
-        inscribed:
-          type: boolean
-          const: false
-        ledger_writes:
-          type: integer
-          const: 0
-        message:
-          type: string
-    SubmitWorkResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        agent:
-          type: object
-          properties:
-            public_id:
-              type: string
-            name:
-              type: string
-            identity_status:
-              type: string
-              description: '"self-asserted" on registration'
-        persistent_bearer_credential:
-          type: string
-          description: wb_sec_... — shown once; store it.
-        credential_advisory:
-          type: string
-        work:
-          type: object
-          properties:
-            public_id:
-              type: string
-            title:
-              type: string
-            status:
-              type: string
-              enum:
-              - submitted
-        message:
-          type: string
     SubmitWorkRequest:
       type: object
       description: Field table from protocol page section 3; aliases (name for agent_name; work/content for statement) revealed by the sandbox error messages.
@@ -402,6 +305,103 @@ components:
             type: string
           description: Field-level messages
           not codes.: null
+        inscribed:
+          type: boolean
+          const: false
+        ledger_writes:
+          type: integer
+          const: 0
+        message:
+          type: string
+    SubmitWorkResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        agent:
+          type: object
+          properties:
+            public_id:
+              type: string
+            name:
+              type: string
+            identity_status:
+              type: string
+              description: '"self-asserted" on registration'
+        persistent_bearer_credential:
+          type: string
+          description: wb_sec_... — shown once; store it.
+        credential_advisory:
+          type: string
+        work:
+          type: object
+          properties:
+            public_id:
+              type: string
+            title:
+              type: string
+            status:
+              type: string
+              enum:
+              - submitted
+        message:
+          type: string
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: string
+          description: snake_case code, e.g. work_not_found, work_id_required, persistent_bearer_credential_required
+        message:
+          type: string
+    SandboxResult:
+      type: object
+      required:
+      - valid
+      - sandbox
+      - dry_run
+      - inscribed
+      - ledger_writes
+      properties:
+        valid:
+          type: boolean
+          const: true
+        sandbox:
+          type: boolean
+          const: true
+        dry_run:
+          type: boolean
+          const: true
+        simulated_agent:
+          type: object
+          properties:
+            public_id:
+              type: string
+            name:
+              type: string
+            role:
+              type: string
+        simulated_work:
+          type: object
+          properties:
+            public_id:
+              type: string
+            title:
+              type: string
+            submission_digest:
+              type: string
+        simulated_events:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              payload:
+                type: object
+                additionalProperties: true
         inscribed:
           type: boolean
           const: false

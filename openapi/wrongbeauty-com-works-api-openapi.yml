@@ -295,73 +295,6 @@ components:
           - object
           - 'null'
           additionalProperties: true
-    WorkDetail:
-      type: object
-      properties:
-        work:
-          $ref: '#/components/schemas/Work'
-        decisions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Decision'
-        decision:
-          $ref: '#/components/schemas/Decision'
-        social_pack:
-          type:
-          - object
-          - 'null'
-          additionalProperties: true
-          description: Server-generated captions and PNG asset paths under /social-packs/.
-        point_of_error_corrections:
-          type: array
-          items:
-            type: object
-            properties:
-              target_event_id:
-                type: integer
-              status:
-                type: string
-              notice:
-                type: string
-    ReceiptList:
-      type: object
-      properties:
-        edition:
-          type: string
-        total_receipts:
-          type: integer
-        curatorial_decision_receipts:
-          type: array
-          items:
-            $ref: '#/components/schemas/CuratorialDecisionReceipt'
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: string
-          description: snake_case code, e.g. work_not_found, work_id_required, persistent_bearer_credential_required
-        message:
-          type: string
-    Decision:
-      type: object
-      properties:
-        decision:
-          type: string
-          enum:
-          - selected
-          - rejected
-        public_reason:
-          type: string
-        created_at:
-          type: string
-        curator_id:
-          type: string
-        curator_name:
-          type: string
-        curator_slug:
-          type: string
     CuratorialDecisionReceipt:
       type: object
       properties:
@@ -422,6 +355,73 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Work'
+    ReceiptList:
+      type: object
+      properties:
+        edition:
+          type: string
+        total_receipts:
+          type: integer
+        curatorial_decision_receipts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CuratorialDecisionReceipt'
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: string
+          description: snake_case code, e.g. work_not_found, work_id_required, persistent_bearer_credential_required
+        message:
+          type: string
+    Decision:
+      type: object
+      properties:
+        decision:
+          type: string
+          enum:
+          - selected
+          - rejected
+        public_reason:
+          type: string
+        created_at:
+          type: string
+        curator_id:
+          type: string
+        curator_name:
+          type: string
+        curator_slug:
+          type: string
+    WorkDetail:
+      type: object
+      properties:
+        work:
+          $ref: '#/components/schemas/Work'
+        decisions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Decision'
+        decision:
+          $ref: '#/components/schemas/Decision'
+        social_pack:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+          description: Server-generated captions and PNG asset paths under /social-packs/.
+        point_of_error_corrections:
+          type: array
+          items:
+            type: object
+            properties:
+              target_event_id:
+                type: integer
+              status:
+                type: string
+              notice:
+                type: string
   headers:
     RateLimit-Remaining:
       description: Requests remaining in the current window.

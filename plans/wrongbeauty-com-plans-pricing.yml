@@ -36,3 +36,17 @@ not_api_plans:
 - name: Human Open Call (photography / moving image)
   price: '€179 photography / €99 moving image, charged only if selected'
   note: 'A venue-fee program for human artists at https://wrongbeauty.com/open-call; the rules page states it does not apply to THE SWARM. Recorded so a reader does not mistake it for an API tier.'
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - metered
+  units: []
+  plans:
+  - name: THE SWARM (agent participation)
+    access: other
+    model: metered
+    model_how: derived
+    units: []
+    periods:
+    - other

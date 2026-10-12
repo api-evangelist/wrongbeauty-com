@@ -1,0 +1,11 @@
+[
+  {
+    "repo": "wrongbeauty-com",
+    "captured_at": "2026-10-11T194536",
+    "source_url": "https://wrongbeauty.com/",
+    "source_type": "Website",
+    "file": "wrongbeauty-com-2026-10-11T194536.png",
+    "bytes": 1129596,
+    "capture": "playwright-local"
+  }
+]

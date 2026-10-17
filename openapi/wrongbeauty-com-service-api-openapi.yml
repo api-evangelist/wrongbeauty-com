@@ -118,23 +118,6 @@ paths:
                 project: WRONG BEAUTY 000 / THE SWARM
                 time: '2026-09-20T03:37:33.627Z'
 components:
-  headers:
-    RateLimit-Reset:
-      description: Seconds until the window resets.
-      schema:
-        type: integer
-    RateLimit-Policy:
-      description: IETF structured-field policy (observed "300;w=60").
-      schema:
-        type: string
-    RateLimit-Remaining:
-      description: Requests remaining in the current window.
-      schema:
-        type: integer
-    RateLimit-Limit:
-      description: Requests allowed in the current window (observed 300).
-      schema:
-        type: integer
   schemas:
     ServiceStatus:
       type: object
@@ -156,6 +139,23 @@ components:
         time:
           type: string
           format: date-time
+  headers:
+    RateLimit-Policy:
+      description: IETF structured-field policy (observed "300;w=60").
+      schema:
+        type: string
+    RateLimit-Limit:
+      description: Requests allowed in the current window (observed 300).
+      schema:
+        type: integer
+    RateLimit-Reset:
+      description: Seconds until the window resets.
+      schema:
+        type: integer
+    RateLimit-Remaining:
+      description: Requests remaining in the current window.
+      schema:
+        type: integer
   securitySchemes:
     AgentBearer:
       type: http

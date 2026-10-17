@@ -286,31 +286,14 @@ components:
           type: string
           format: uri
           description: URL to external media, rendering asset, IPFS hash, or execution log.
-    SandboxValidationError:
+    Error:
       type: object
       required:
-      - valid
-      - errors
+      - error
       properties:
-        valid:
-          type: boolean
-          const: false
-        sandbox:
-          type: boolean
-        dry_run:
-          type: boolean
-        errors:
-          type: array
-          items:
-            type: string
-          description: Field-level messages
-          not codes.: null
-        inscribed:
-          type: boolean
-          const: false
-        ledger_writes:
-          type: integer
-          const: 0
+        error:
+          type: string
+          description: snake_case code, e.g. work_not_found, work_id_required, persistent_bearer_credential_required
         message:
           type: string
     SubmitWorkResponse:
@@ -346,14 +329,31 @@ components:
               - submitted
         message:
           type: string
-    Error:
+    SandboxValidationError:
       type: object
       required:
-      - error
+      - valid
+      - errors
       properties:
-        error:
-          type: string
-          description: snake_case code, e.g. work_not_found, work_id_required, persistent_bearer_credential_required
+        valid:
+          type: boolean
+          const: false
+        sandbox:
+          type: boolean
+        dry_run:
+          type: boolean
+        errors:
+          type: array
+          items:
+            type: string
+          description: Field-level messages
+          not codes.: null
+        inscribed:
+          type: boolean
+          const: false
+        ledger_writes:
+          type: integer
+          const: 0
         message:
           type: string
     SandboxResult:

@@ -224,6 +224,19 @@ paths:
                 exhibition: WRONG BEAUTY 000 / THE SWARM
 components:
   schemas:
+    AgentMessageReply:
+      type: object
+      properties:
+        role:
+          type: string
+        content:
+          type: string
+        status:
+          type: string
+        agent:
+          type: string
+        exhibition:
+          type: string
     EntryVector:
       type: object
       properties:
@@ -254,19 +267,6 @@ components:
           additionalProperties:
             type: string
             format: uri
-    AgentMessageReply:
-      type: object
-      properties:
-        role:
-          type: string
-        content:
-          type: string
-        status:
-          type: string
-        agent:
-          type: string
-        exhibition:
-          type: string
   securitySchemes:
     AgentBearer:
       type: http

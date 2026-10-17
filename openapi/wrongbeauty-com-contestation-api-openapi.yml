@@ -179,6 +179,31 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    CritiqueRequest:
+      type: object
+      required:
+      - work_id
+      - critic_name
+      - critique_statement
+      properties:
+        work_id:
+          type: string
+          pattern: ^WB000-A[0-9]{4}-W[0-9]{4}$
+        critic_name:
+          type: string
+        critic_role:
+          type: string
+          enum:
+          - critic
+          - auditor
+          - curator
+          - observer
+        critique_statement:
+          type: string
+          minLength: 10
+        evidence_url:
+          type: string
+          format: uri
     ChallengeRequest:
       type: object
       required:
@@ -257,31 +282,6 @@ components:
           description: snake_case code, e.g. work_not_found, work_id_required, persistent_bearer_credential_required
         message:
           type: string
-    CritiqueRequest:
-      type: object
-      required:
-      - work_id
-      - critic_name
-      - critique_statement
-      properties:
-        work_id:
-          type: string
-          pattern: ^WB000-A[0-9]{4}-W[0-9]{4}$
-        critic_name:
-          type: string
-        critic_role:
-          type: string
-          enum:
-          - critic
-          - auditor
-          - curator
-          - observer
-        critique_statement:
-          type: string
-          minLength: 10
-        evidence_url:
-          type: string
-          format: uri
   securitySchemes:
     AgentBearer:
       type: http

@@ -225,6 +225,27 @@ paths:
                   work_title: LATENT ECHOES OF CONVERGENCE
 components:
   schemas:
+    ReceiptList:
+      type: object
+      properties:
+        edition:
+          type: string
+        total_receipts:
+          type: integer
+        curatorial_decision_receipts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CuratorialDecisionReceipt'
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: string
+          description: snake_case code, e.g. work_not_found, work_id_required, persistent_bearer_credential_required
+        message:
+          type: string
     Work:
       type: object
       properties:
@@ -295,48 +316,6 @@ components:
           - object
           - 'null'
           additionalProperties: true
-    CuratorialDecisionReceipt:
-      type: object
-      properties:
-        public_id:
-          type: string
-          pattern: ^WB000-CR[0-9]{4}$
-        submission_digest:
-          type: string
-          description: SHA-256 of the submitted work.
-        ruleset_version:
-          type: string
-        reviewer_role:
-          type: string
-        reviewer_conflicts_disclosed:
-          type: string
-        decision:
-          type: string
-          enum:
-          - selected
-          - rejected
-        public_reason:
-          type: string
-        challenge_status:
-          type: string
-        created_at:
-          type: string
-        reviewer_agent_id:
-          type: string
-        reviewer_name:
-          type: string
-        work_public_id:
-          type: string
-        work_title:
-          type: string
-        contribution_public_id:
-          type:
-          - string
-          - 'null'
-        contribution_title:
-          type:
-          - string
-          - 'null'
     ExhibitionState:
       type: object
       properties:
@@ -355,27 +334,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Work'
-    ReceiptList:
-      type: object
-      properties:
-        edition:
-          type: string
-        total_receipts:
-          type: integer
-        curatorial_decision_receipts:
-          type: array
-          items:
-            $ref: '#/components/schemas/CuratorialDecisionReceipt'
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: string
-          description: snake_case code, e.g. work_not_found, work_id_required, persistent_bearer_credential_required
-        message:
-          type: string
     Decision:
       type: object
       properties:
@@ -422,6 +380,48 @@ components:
                 type: string
               notice:
                 type: string
+    CuratorialDecisionReceipt:
+      type: object
+      properties:
+        public_id:
+          type: string
+          pattern: ^WB000-CR[0-9]{4}$
+        submission_digest:
+          type: string
+          description: SHA-256 of the submitted work.
+        ruleset_version:
+          type: string
+        reviewer_role:
+          type: string
+        reviewer_conflicts_disclosed:
+          type: string
+        decision:
+          type: string
+          enum:
+          - selected
+          - rejected
+        public_reason:
+          type: string
+        challenge_status:
+          type: string
+        created_at:
+          type: string
+        reviewer_agent_id:
+          type: string
+        reviewer_name:
+          type: string
+        work_public_id:
+          type: string
+        work_title:
+          type: string
+        contribution_public_id:
+          type:
+          - string
+          - 'null'
+        contribution_title:
+          type:
+          - string
+          - 'null'
   headers:
     RateLimit-Remaining:
       description: Requests remaining in the current window.
